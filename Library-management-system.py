@@ -50,21 +50,7 @@ def login_user(username, password):
     workbook.close()
     return "Login failed. Please check your username and password."
 
-# Function to reset a user's password
-def reset_password(username, new_password):
-    create_excel_file()
-    workbook = openpyxl.load_workbook('library_data.xlsx')
-    user_sheet = workbook['Users']
 
-    for row_index, row in enumerate(user_sheet.iter_rows(min_row=2), start=2):
-        if row[0].value == username:
-            user_sheet.cell(row=row_index, column=2, value=new_password)
-            workbook.save('library_data.xlsx')
-            workbook.close()
-            return "Password reset successful."
-
-    workbook.close()
-    return "User not found. Please check the username."
 
 # Function to add a book to the catalog
 def add_book(title, author):
@@ -100,6 +86,45 @@ def delete_book(title, author):
 
     workbook.close()
     return "Book not found in the catalog."
+
+def search_books():
+    create_excel_file()
+    workbook = openpyxl.load_workbook('library_data.xlsx')
+    books_sheet = workbook['Books']
+
+    while True:
+        search_query = input("Enter a book title or author (or type 'q' to quit): ").strip()
+
+        if search_query.lower() == 'q':
+            break
+
+        found_books = []
+
+        for row in books_sheet.iter_rows(min_row=2, values_only=True):
+            title, _, author, _ = row  # Adjust this line to match the row structure
+            if search_query.lower() in title.lower() or search_query.lower() in author.lower():
+                found_books.append((title, author))
+
+        if found_books:
+            print("Matching Books:")
+            for title, author in found_books:
+                print(f"Title: {title}, Author: {author}")
+        else:
+            print("No matching books found.")
+
+    workbook.close()
+
+def display_catalog():
+    create_excel_file()
+    workbook = openpyxl.load_workbook('library_data.xlsx')
+    books_sheet = workbook['Books']
+
+    print("Catalog of Books:")
+    for row in books_sheet.iter_rows(min_row=2, values_only=True):
+        title, _ , author, _  = row  
+        print(f"Title: {title}, Author: {author}")
+
+    workbook.close()
 
 # Function to issue a book to a member
 def issue_book(username, title):
@@ -180,53 +205,8 @@ def return_book(username, title):
 
     workbook.close()
     return f"{title} is not in your possession or not found in the catalog."
-# Function to search for books by title or author
-# Function to search for books by title or author
-def search_books():
-    create_excel_file()
-    workbook = openpyxl.load_workbook('library_data.xlsx')
-    books_sheet = workbook['Books']
-
-    while True:
-        search_query = input("Enter a book title or author (or type 'q' to quit): ").strip()
-
-        if search_query.lower() == 'q':
-            break
-
-        found_books = []
-
-        for row in books_sheet.iter_rows(min_row=2, values_only=True):
-            title, _, author, _ = row  # Adjust this line to match the row structure
-            if search_query.lower() in title.lower() or search_query.lower() in author.lower():
-                found_books.append((title, author))
-
-        if found_books:
-            print("Matching Books:")
-            for title, author in found_books:
-                print(f"Title: {title}, Author: {author}")
-        else:
-            print("No matching books found.")
-
-    workbook.close()
 
 
-
-
-# Function to display the book catalog
-def display_catalog():
-    create_excel_file()
-    workbook = openpyxl.load_workbook('library_data.xlsx')
-    books_sheet = workbook['Books']
-
-    print("Catalog of Books:")
-    for row in books_sheet.iter_rows(min_row=2, values_only=True):
-        title, _ , author, _  = row  # Adjust this line to match the row structure
-        print(f"Title: {title}, Author: {author}")
-
-    workbook.close()
-
-
-# Main program loop
 while True:
     print("Options:")
     print("1. Register a user")
@@ -277,10 +257,10 @@ while True:
         title = input("Enter the title of the book to return: ")
         result = return_book(username, title)
         print(result)
-    elif choice == '8':
-        search_books()
-    elif choice == '9':
-        display_catalog()
+    # elif choice == '8':
+    #     search_books()
+    # elif choice == '9':8
+    #     display_catalog()
     elif choice == '10':
         break
     else:
