@@ -4,7 +4,7 @@ def search_books():
     books_sheet = workbook['Books']
 
     while True:
-        search_query = input("Enter a book title or author (or type 'q' to quit): ").strip()
+        search_query = input("Enter a boook title or author (or type 'q' to quit): ").strip()
 
         if search_query.lower() == 'q':
             break
@@ -17,11 +17,11 @@ def search_books():
                 found_books.append((title, author))
 
         if found_books:
-            print("Matching Books:")
+            print("Matching Booksss:")
             for title, author in found_books:
                 print(f"Title: {title}, Author: {author}")
         else:
-            print("No matching books found.")
+            print("No matching books foundd.")
 
     workbook.close()
 
