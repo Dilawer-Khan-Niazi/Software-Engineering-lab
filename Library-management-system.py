@@ -222,8 +222,6 @@ while True:
     #     search_books()
     # elif choice == '9':8
     #     display_catalog()
-    elif choice == '8' or '9':
-        print("Functions are not available")
     elif choice == '10':
         break
     else:
