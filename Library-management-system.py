@@ -168,8 +168,6 @@ def return_book(username, title):
     return f"{title} is not in your possession or not found in the catalog."
 
 
-
-# Main program loop
 while True:
     print("Options:")
     print("1. Register a user")
